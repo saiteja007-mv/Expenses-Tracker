@@ -58,7 +58,16 @@ export default function HomePage() {
   };
 
   const signInGoogle = async () => {
-    await supabase.auth.signInWithOAuth({ provider: 'google' });
+    const { data, error } = await supabase.auth.signInWithOAuth({ 
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+    
+    if (error) {
+      console.error('Error signing in with Google:', error);
+    }
   };
   const signOut = async () => { await supabase.auth.signOut(); setProfile(null); };
 
